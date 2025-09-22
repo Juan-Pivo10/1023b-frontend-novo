@@ -1,4 +1,3 @@
-import { error } from 'console'
 import './App.css'
 //useeffect
 import { useEffect, useState } from 'react'
@@ -21,13 +20,19 @@ function App() {
     event.preventDefault()
     const form = event.currentTarget
     const formData = new FormData(form)
+    const data = {
+      nome: formData.get('nome') as string,
+      preco: Number(formData.get('preco')),
+      urlfoto: formData.get('urlfoto') as string,
+      descricao: formData.get('descricao') as string
+    }
     
     fetch('/api/produtos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(data)
     })
       .then((response) => response.json())
       .then((newProduto) => setProdutos([...produtos, newProduto]))
