@@ -2,7 +2,7 @@ import './App.css'
 //useeffect
 import { useEffect, useState } from 'react'
 type ProdutoType = {
-  id: string,
+  _id: string,
   nome: string,
   preco: number,
   urlfoto: string,
@@ -39,6 +39,16 @@ function App() {
       .catch((error) => console.error('Error posting data:', error))
     form.reset()
   }
+  function adicionarCarrinho(produtoId: string) {
+    const clienteId = "12233"
+    fetch('/api/carrinho', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ produtoId, clienteId })
+    })
+  }
   return ( 
   <>
   <div>Cadastro de Produtos</div>
@@ -52,11 +62,12 @@ function App() {
   <div>Lista de Produtos</div>
   {
     produtos.map((produto) => (
-      <div key={produto.id}>
+      <div key={produto._id}>
         <h2>{produto.nome}</h2>
-        <p>{produto.descricao}</p>
         <p>R$ {produto.preco}</p>
         <img src={produto.urlfoto} alt={produto.nome} width="200" />
+        <p>{produto.descricao}</p>
+        <button onClick={() => adicionarCarrinho(produto._id)}>Adicionar ao carrinho</button>
       </div>
     ))
   }
